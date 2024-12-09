@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Configs;
+﻿using Configs;
 using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
@@ -13,7 +10,8 @@ namespace Gameplay
 		[SerializeField] private Transform _container;
 
 		private Config _config;
-		
+		private CloudMover _lastSpawnedCloud;
+
 		public void Init(Config config)
 		{
 			_config = config;
@@ -22,7 +20,7 @@ namespace Gameplay
 		public void InitLevel(LevelConfig levelConfig)
 		{
 			SpawnClouds(levelConfig);
-			SpawnSunbeams(levelConfig);
+			SpawnSunbeams();
 		}
 
 		public void Cleanup()
@@ -33,18 +31,14 @@ namespace Gameplay
 			}
 		}
 
-		private void SpawnSunbeams(LevelConfig levelConfig)
+		private void SpawnSunbeams()
 		{
-			float accumulatedDistance = _config.MovementBordersAxisX.x; //+ levelConfig.SunbeamIntervalX;
+			float accumulatedDistance = _config.MovementBordersAxisX.x;
 			float sunbeamWidth = _config.SunbeamPrefab.transform.localScale.x;
 
 			while (accumulatedDistance < _config.MovementBordersAxisX.y)
 			{
-				var random = Random.Range(0f, 1f);
-				var sunbeamPosZ = levelConfig.ChargeableProbabilityCoef > random
-					? _config.ChargeableSunbeamSpawnPosZ
-					: _config.NotChargeableSunbeamSpawnPosZ.GetRandomElement();
-
+				var sunbeamPosZ = _config.ChargeableSunbeamSpawnPosZ;
 				var spawnPos = new Vector3(accumulatedDistance, _config.SunbeamSpawnPosY, sunbeamPosZ);
 				Instantiate(_config.SunbeamPrefab, spawnPos, Quaternion.Euler(_config.SunbeamRotation), _container);
 
@@ -55,16 +49,32 @@ namespace Gameplay
 		private void SpawnClouds(LevelConfig levelConfig)
 		{
 			float accumulatedDistance = _config.MovementBordersAxisX.x + _config.CloudOffsetX;
-			float cloudWidth = _config.CloudPrefab.transform.localScale.x;
 
-			while (accumulatedDistance < _config.MovementBordersAxisX.y - _config.CloudOffsetX)
+			while (accumulatedDistance < _config.MovementBordersAxisX.y)
 			{
-				var spawnPos = new Vector3(accumulatedDistance, _config.CloudSpawnPos.y, _config.CloudSpawnPos.z);
-				var cloudMover = Instantiate(_config.CloudPrefab, spawnPos, Quaternion.identity, _container).GetComponent<CloudMover>();
-				cloudMover.Init(levelConfig.CloudSpeed, _config.MovementBordersAxisX.y);
+				_lastSpawnedCloud = GetOriginalCloud();
+				var cloudWidth = _lastSpawnedCloud.transform.localScale.x;
+				var spawnPos = _lastSpawnedCloud.transform.position;
+				var spawnInterval = Random.Range(levelConfig.CloudSpawnIntervalRange.x, levelConfig.CloudSpawnIntervalRange.y);
 
-				accumulatedDistance += cloudWidth + levelConfig.CloudSpawnInterval;
+				var accumulatedSpawnPos = new Vector3(accumulatedDistance, spawnPos.y, spawnPos.z);
+				var cloudMover = Instantiate(_lastSpawnedCloud, accumulatedSpawnPos, Quaternion.identity, _container).GetComponent<CloudMover>();
+				cloudMover.Init(_config.MovementBordersAxisX.y);
+
+				accumulatedDistance += cloudWidth / 2 + spawnInterval;
 			}
+		}
+
+		private CloudMover GetOriginalCloud()
+		{
+			CloudMover cloudPrefab;
+			do
+			{
+				cloudPrefab = _config.CloudPrefabs.GetRandomElement();
+			}
+			while (cloudPrefab == _lastSpawnedCloud);
+
+			return cloudPrefab;
 		}
 	}
 }

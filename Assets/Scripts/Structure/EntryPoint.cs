@@ -29,7 +29,7 @@ namespace Structure
 			_cameraMover.Init(_config);
 			_spawner.Init(_config);
 			var gameplayManager = new GameplayManager(_levelConfigsStorage, _spawner, _timer, _solarBattery, _cameraMover);
-			_buildingsController.Init(gameplayManager);
+			_buildingsController.Init(gameplayManager, _solarBattery);
 			InitScreen(gameplayManager);
 
 			gameplayManager.InitLevel();

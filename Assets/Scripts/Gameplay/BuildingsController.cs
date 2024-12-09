@@ -12,10 +12,12 @@ namespace Gameplay
 
 		private List<MeshRenderer> _buildingMeshes;
 		private IGameLoop _gameLoop;
+		private ISolarBattery _solarBattery;
 
-		public void Init(IGameLoop gameLoop)
+		public void Init(IGameLoop gameLoop, ISolarBattery solarBattery)
 		{
 			_gameLoop = gameLoop;
+			_solarBattery = solarBattery;
 
 			_gameLoop.Started += SetupGrayColor;
 			_gameLoop.Finished += SetupGreenColor;
@@ -37,6 +39,9 @@ namespace Gameplay
 
 		private void SetupGreenColor()
 		{
+			if (!_solarBattery.IsCharged)
+				return;
+
 			foreach (MeshRenderer buildingMesh in _buildingMeshes)
 			{
 				buildingMesh.material.color = _greenColor;

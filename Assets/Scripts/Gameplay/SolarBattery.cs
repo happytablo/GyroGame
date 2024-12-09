@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-	public class SolarBattery : MonoBehaviour
+	public class SolarBattery : MonoBehaviour, ISolarBattery
 	{
 		public event Action ValueChanged;
 		public event Action Fulled;
@@ -16,6 +16,7 @@ namespace Gameplay
 		private readonly List<Sunbeam> _collidedSunbeams = new List<Sunbeam>();
 
 		public float ChargeValue { get; private set; }
+		public bool IsCharged => ChargeValue >= 1;
 
 		private void Update()
 		{
