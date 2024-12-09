@@ -4,14 +4,13 @@ namespace Gameplay
 {
 	public class CloudMover : MonoBehaviour
 	{
-		private float _speed;
+		[SerializeField] private float _speed;
+		
 		private float _rightPosX;
-
 		private bool _inited;
 
-		public void Init(float speed, float rightPosX)
+		public void Init(float rightPosX)
 		{
-			_speed = speed;
 			_rightPosX = rightPosX;
 
 			_inited = true;

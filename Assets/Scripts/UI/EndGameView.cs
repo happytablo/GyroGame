@@ -2,7 +2,6 @@
 using Gameplay;
 using Structure;
 using UnityEngine;
-using Utils;
 
 namespace UI
 {

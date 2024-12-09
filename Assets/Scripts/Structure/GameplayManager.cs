@@ -76,7 +76,7 @@ namespace Structure
 			_solarBattery.StopCharging();
 			_spawner.Cleanup();
 			_cameraMover.enabled = false;
-
+			
 			Finished?.Invoke();
 		}
 	}
