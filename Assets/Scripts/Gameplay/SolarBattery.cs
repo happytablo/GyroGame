@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gameplay
@@ -7,32 +9,62 @@ namespace Gameplay
 	{
 		public event Action ValueChanged;
 		public event Action Fulled;
-		
-		private ISunbeamsProvider _sunbeamsProvider;
+
 		private float _stepPerFrame;
 		private bool _isChargeable;
 
+		private readonly List<Sunbeam> _collidedSunbeams = new List<Sunbeam>();
+
 		public float ChargeValue { get; private set; }
 
-		public void Init(ISunbeamsProvider sunbeamsProvider)
+		private void Update()
 		{
-			_sunbeamsProvider = sunbeamsProvider;
+			if (!_isChargeable)
+				return;
+
+			if (_collidedSunbeams.Any(sunbeam => !sunbeam.IsCovered))
+			{
+				Charge();
+			}
 		}
 
-		public void Subscribe(float stepPerFrame)
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.TryGetComponent(out Sunbeam sunbeam))
+			{
+				if (_collidedSunbeams.Contains(sunbeam))
+				{
+					return;
+				}
+
+				_collidedSunbeams.Add(sunbeam);
+			}
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			if (other.TryGetComponent(out Sunbeam sunbeam))
+			{
+				if (_collidedSunbeams.Contains(sunbeam))
+				{
+					_collidedSunbeams.Remove(sunbeam);
+				}
+			}
+		}
+
+		public void BeginCharging(float stepPerFrame)
 		{
 			_stepPerFrame = stepPerFrame;
 			Reset();
-
-			foreach (Sunbeam sunbeam in _sunbeamsProvider.Sunbeams)
-			{
-				sunbeam.HitBatteryPanel += OnBatteryHit;
-			}
-
 			_isChargeable = true;
 		}
 
-		private void OnBatteryHit()
+		public void StopCharging()
+		{
+			_isChargeable = false;
+		}
+
+		private void Charge()
 		{
 			if (!_isChargeable)
 				return;
@@ -45,16 +77,6 @@ namespace Gameplay
 				Fulled?.Invoke();
 				_isChargeable = false;
 			}
-		}
-
-		public void Unsubscribe()
-		{
-			foreach (Sunbeam sunbeam in _sunbeamsProvider.Sunbeams)
-			{
-				sunbeam.HitBatteryPanel -= OnBatteryHit;
-			}
-
-			_isChargeable = false;
 		}
 
 		private void Reset()

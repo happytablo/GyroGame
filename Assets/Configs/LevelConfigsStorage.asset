@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: LevelConfigsStorage
   m_EditorClassIdentifier: 
   _levelConfigs:
-  - _time: 60
-    _chargingStepPerFrame: 0.1
-    _sunbeamIntervalX: 5
+  - _time: 30
+    _chargingStepPerFrame: 0.08
+    _sunbeamIntervalX: 3
     _chargeableProbabilityCoef: 0.5
     _cloudSpawnInterval: 3
     _cloudSpeed: 0.5

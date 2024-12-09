@@ -8,14 +8,12 @@ using Random = UnityEngine.Random;
 
 namespace Gameplay
 {
-	public class Spawner : MonoBehaviour, ISunbeamsProvider
+	public class Spawner : MonoBehaviour
 	{
 		[SerializeField] private Transform _container;
 
 		private Config _config;
-
-		public List<Sunbeam> Sunbeams { get; } = new List<Sunbeam>();
-
+		
 		public void Init(Config config)
 		{
 			_config = config;
@@ -29,8 +27,6 @@ namespace Gameplay
 
 		public void Cleanup()
 		{
-			Sunbeams.Clear();
-
 			foreach (Transform child in _container)
 			{
 				Destroy(child.gameObject);
@@ -39,7 +35,7 @@ namespace Gameplay
 
 		private void SpawnSunbeams(LevelConfig levelConfig)
 		{
-			float accumulatedDistance = _config.MovementBordersAxisX.x + levelConfig.SunbeamIntervalX;
+			float accumulatedDistance = _config.MovementBordersAxisX.x; //+ levelConfig.SunbeamIntervalX;
 			float sunbeamWidth = _config.SunbeamPrefab.transform.localScale.x;
 
 			while (accumulatedDistance < _config.MovementBordersAxisX.y)
@@ -50,10 +46,9 @@ namespace Gameplay
 					: _config.NotChargeableSunbeamSpawnPosZ.GetRandomElement();
 
 				var spawnPos = new Vector3(accumulatedDistance, _config.SunbeamSpawnPosY, sunbeamPosZ);
-				var sunbeam = Instantiate(_config.SunbeamPrefab, spawnPos, Quaternion.Euler(_config.SunbeamRotation), _container).GetComponent<Sunbeam>();
-				Sunbeams.Add(sunbeam);
+				Instantiate(_config.SunbeamPrefab, spawnPos, Quaternion.Euler(_config.SunbeamRotation), _container);
 
-				accumulatedDistance += sunbeamWidth + levelConfig.SunbeamIntervalX;
+				accumulatedDistance += sunbeamWidth;
 			}
 		}
 

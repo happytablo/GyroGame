@@ -5,7 +5,7 @@ namespace Gameplay
 {
 	public class CameraMover : MonoBehaviour
 	{
-		[SerializeField] private float _speedCoef = 0.01f;
+		[SerializeField] private float _speedCoef = 10;
 
 		private Config _config;
 
@@ -25,13 +25,13 @@ namespace Gameplay
 
 			float deltaX = currentGyroX - InitialGyroX;
 
-			if (deltaX > 180)
+			if (deltaX < 180)
 				deltaX -= 360;
 
-			if (deltaX < -180)
+			if (deltaX > -180)
 				deltaX += 360;
 
-			float moveX = deltaX * _speedCoef;
+			float moveX = deltaX * _speedCoef * Time.deltaTime;
 
 			var targetPosX = Mathf.Clamp(transform.position.x + moveX, _config.MovementBordersAxisX.x, _config.MovementBordersAxisX.y);
 			transform.position = new Vector3(targetPosX, transform.position.y, transform.position.z);

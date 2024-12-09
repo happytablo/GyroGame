@@ -58,7 +58,7 @@ namespace Structure
 
 			_spawner.InitLevel(levelConfig);
 			_timer.StartTimer(levelConfig.Time);
-			_solarBattery.Subscribe(levelConfig.ChargingStepPerFrame);
+			_solarBattery.BeginCharging(levelConfig.ChargingStepPerFrame);
 			_cameraMover.enabled = true;
 
 			_timer.Finished += Finish;
@@ -73,7 +73,7 @@ namespace Structure
 			_solarBattery.Fulled -= Finish;
 
 			_timer.Stop();
-			_solarBattery.Unsubscribe();
+			_solarBattery.StopCharging();
 			_spawner.Cleanup();
 			_cameraMover.enabled = false;
 

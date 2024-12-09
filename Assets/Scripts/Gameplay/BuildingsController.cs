@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Structure;
 using UnityEngine;
 
@@ -6,11 +7,10 @@ namespace Gameplay
 {
 	public class BuildingsController : MonoBehaviour
 	{
-		[SerializeField] private List<MeshRenderer> _buildingMeshes;
-
 		[SerializeField] private Color _grayColor;
 		[SerializeField] private Color _greenColor;
 
+		private List<MeshRenderer> _buildingMeshes;
 		private IGameLoop _gameLoop;
 
 		public void Init(IGameLoop gameLoop)
@@ -19,6 +19,11 @@ namespace Gameplay
 
 			_gameLoop.Started += SetupGrayColor;
 			_gameLoop.Finished += SetupGreenColor;
+		}
+
+		private void Awake()
+		{
+			_buildingMeshes = GetComponentsInChildren<MeshRenderer>().ToList();
 		}
 
 		private void OnDestroy()
