@@ -24,8 +24,8 @@ namespace UI
 		{
 			Subscribe();
 
-			if (_solarBattery != null)
-				_batteryFilledImage.fillAmount = _solarBattery.ChargeValue / 1;
+			//if (_solarBattery != null)
+			//	_batteryFilledImage.fillAmount = _solarBattery.ChargeValue / 1;
 		}
 
 		private void OnDisable()
