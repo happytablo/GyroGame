@@ -25,11 +25,11 @@ namespace Gameplay
 
 			float deltaX = currentGyroX - InitialGyroX;
 
-			if (deltaX < 180)
-				deltaX -= 360;
-
-			if (deltaX > -180)
+			if (deltaX > 180)
 				deltaX += 360;
+
+			if (deltaX < -180)
+				deltaX -= 360;
 
 			float moveX = deltaX * _speedCoef * Time.deltaTime;
 

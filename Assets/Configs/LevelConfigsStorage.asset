@@ -18,7 +18,7 @@ MonoBehaviour:
     _cloudSpawnIntervalRange: {x: 2, y: 5}
   - _time: 30
     _chargingStepPerFrame: 0.07
-    _cloudSpawnIntervalRange: {x: 2, y: 5}
+    _cloudSpawnIntervalRange: {x: 2, y: 4.5}
   - _time: 30
     _chargingStepPerFrame: 0.06
     _cloudSpawnIntervalRange: {x: 2, y: 4}
