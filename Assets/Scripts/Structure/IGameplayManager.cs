@@ -4,5 +4,6 @@
 	{
 		void RestartGame();
 		void LoadNextLevel();
+		int CurrentLevelIndex { get; }
 	}
 }

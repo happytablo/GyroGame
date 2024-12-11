@@ -58,11 +58,13 @@ namespace Gameplay
 			_stepPerFrame = stepPerFrame;
 			Reset();
 			_isChargeable = true;
+			Debug.Log($"START ch");
 		}
 
-		public void StopCharging()
+		private void StopCharging()
 		{
 			_isChargeable = false;
+			Debug.Log($"Stop ch");
 		}
 
 		private void Charge()
@@ -75,13 +77,14 @@ namespace Gameplay
 
 			if (ChargeValue >= 1)
 			{
+				StopCharging();
 				Fulled?.Invoke();
-				_isChargeable = false;
 			}
 		}
 
 		private void Reset()
 		{
+			_collidedSunbeams.Clear();
 			ChargeValue = 0;
 		}
 	}

@@ -1,5 +1,4 @@
 ﻿using System;
-using Gameplay;
 using Structure;
 using UnityEngine;
 
@@ -8,24 +7,20 @@ namespace UI
 	public class EndGameView : MonoBehaviour
 	{
 		[SerializeField] private GyroButton[] _gyroButtons;
-		[SerializeField] private SlicedFilledImage _batteryFilledImage;
+		[SerializeField] private LevelProgressView _levelProgressView;
 
 		private IGameplayManager _gameplayManager;
-		private SolarBattery _solarBattery;
 		private bool _isSubscribed;
 
-		public void Init(IGameplayManager gameplayManager, SolarBattery solarBattery)
+		public void Init(IGameplayManager gameplayManager)
 		{
 			_gameplayManager = gameplayManager;
-			_solarBattery = solarBattery;
+			_levelProgressView.Init(gameplayManager);
 		}
 
 		private void OnEnable()
 		{
 			Subscribe();
-
-			//if (_solarBattery != null)
-			//	_batteryFilledImage.fillAmount = _solarBattery.ChargeValue / 1;
 		}
 
 		private void OnDisable()

@@ -9,7 +9,7 @@ namespace Gameplay
 		public event Action Finished;
 
 		public float RemainingTime { get; private set; }
-		public bool IsPaused { get; private set; }
+		private bool IsPaused { get; set; }
 
 		public void Update()
 		{
@@ -29,6 +29,11 @@ namespace Gameplay
 		{
 			RemainingTime = time;
 			IsPaused = false;
+		}
+
+		public void Pause(bool isPaused)
+		{
+			IsPaused = isPaused;
 		}
 
 		public void Stop()

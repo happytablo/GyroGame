@@ -11,6 +11,7 @@ namespace UI
 		[Space]
 		[SerializeField] private TimerView _timerView;
 		[SerializeField] private BatteryView _batteryView;
+		[SerializeField] private LevelProgressView _levelProgressView;
 
 		private IGameplayManager _gameplayManager;
 		private bool _isSubscribed;
@@ -21,7 +22,8 @@ namespace UI
 
 			_timerView.Init(timer);
 			_batteryView.Init(solarBattery);
-			_endGameView.Init(gameplayManager, solarBattery);
+			_endGameView.Init(gameplayManager);
+			_levelProgressView.Init(gameplayManager);
 
 			Subscribe();
 		}

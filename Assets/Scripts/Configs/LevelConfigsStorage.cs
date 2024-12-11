@@ -17,5 +17,10 @@ namespace Configs
 
 			return null;
 		}
+
+		public bool HasNextLevel(int currentLevelIndex)
+		{
+			return _levelConfigs.Count - 1 > currentLevelIndex;
+		}
 	}
 }

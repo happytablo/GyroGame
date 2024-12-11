@@ -17,7 +17,9 @@ namespace Structure
 		private readonly SolarBattery _solarBattery;
 		private readonly CameraMover _cameraMover;
 
-		private int _currentLevelIndex = 0;
+		private int _currentLevelIndex;
+
+		public int CurrentLevelIndex => _currentLevelIndex;
 
 		public GameplayManager(LevelConfigsStorage levelConfigsStorage, Spawner spawner, Timer timer, SolarBattery solarBattery, CameraMover cameraMover)
 		{
@@ -30,14 +32,14 @@ namespace Structure
 
 		public void InitLevel()
 		{
+			_timer.Finished += FinishGame;
+			_solarBattery.Fulled += OnBatteryFulled;
+
 			StartLevel(_currentLevelIndex);
 		}
 
 		public void RestartGame()
 		{
-			_timer.Finished -= Finish;
-			_solarBattery.Fulled -= Finish;
-
 			SceneManager.LoadScene(0);
 		}
 
@@ -60,24 +62,39 @@ namespace Structure
 			_timer.StartTimer(levelConfig.Time);
 			_solarBattery.BeginCharging(levelConfig.ChargingStepPerFrame);
 			_cameraMover.enabled = true;
-
-			_timer.Finished += Finish;
-			_solarBattery.Fulled += Finish;
-
+			Debug.Log($"lvl: {_currentLevelIndex}");
 			Started?.Invoke();
 		}
 
-		private void Finish()
+		private void OnBatteryFulled()
 		{
-			_timer.Finished -= Finish;
-			_solarBattery.Fulled -= Finish;
+			FinishLevel();
 
-			_timer.Stop();
-			_solarBattery.StopCharging();
+			if (_levelConfigsStorage.HasNextLevel(_currentLevelIndex))
+			{
+				LoadNextLevel();
+			}
+			else
+			{
+				FinishGame();
+			}
+		}
+
+		private void FinishGame()
+		{
+			_timer.Finished -= FinishGame;
+			_solarBattery.Fulled -= OnBatteryFulled;
+
+			FinishLevel();
+
+			Finished?.Invoke();
+		}
+
+		private void FinishLevel()
+		{
+			_timer.Pause(true);
 			_spawner.Cleanup();
 			_cameraMover.enabled = false;
-			
-			Finished?.Invoke();
 		}
 	}
 }
