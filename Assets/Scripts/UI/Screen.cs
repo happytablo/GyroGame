@@ -1,4 +1,5 @@
-﻿using Gameplay;
+﻿using Configs;
+using Gameplay;
 using Structure;
 using UnityEngine;
 
@@ -12,13 +13,17 @@ namespace UI
 		[SerializeField] private TimerView _timerView;
 		[SerializeField] private BatteryView _batteryView;
 		[SerializeField] private LevelProgressView _levelProgressView;
+		[SerializeField] private LevelFinishView _levelFinishView;
 
 		private IGameplayManager _gameplayManager;
+		private Config _config;
+
 		private bool _isSubscribed;
 
-		public void Init(Timer timer, SolarBattery solarBattery, IGameplayManager gameplayManager)
+		public void Init(Timer timer, SolarBattery solarBattery, IGameplayManager gameplayManager, Config config)
 		{
 			_gameplayManager = gameplayManager;
+			_config = config;
 
 			_timerView.Init(timer);
 			_batteryView.Init(solarBattery);
@@ -49,6 +54,13 @@ namespace UI
 		{
 			_ingameView.gameObject.SetActive(false);
 			_endGameView.gameObject.SetActive(true);
+			_endGameView.UpdateDevicesInfo();
+		}
+
+		private void OnLevelFinished(bool isWon)
+		{
+			int currentLevel = _gameplayManager.CurrentLevelIndex + 1;
+			_levelFinishView.Show(currentLevel, _config.PauseBetweenLevelsDuration, isWon);
 		}
 
 		private void Subscribe()
@@ -57,6 +69,7 @@ namespace UI
 			{
 				_gameplayManager.Finished += OnFinished;
 				_gameplayManager.Started += OnStarted;
+				_gameplayManager.LevelFinished += OnLevelFinished;
 				_isSubscribed = true;
 			}
 		}
@@ -67,6 +80,7 @@ namespace UI
 			{
 				_gameplayManager.Finished -= OnFinished;
 				_gameplayManager.Started -= OnStarted;
+				_gameplayManager.LevelFinished -= OnLevelFinished;
 				_isSubscribed = false;
 			}
 		}

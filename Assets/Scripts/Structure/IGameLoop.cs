@@ -1,4 +1,5 @@
 ﻿using System;
+using Configs;
 
 namespace Structure
 {
@@ -6,5 +7,9 @@ namespace Structure
 	{
 		event Action Finished;
 		event Action Started;
+		event Action<bool> LevelFinished;
+		int CurrentLevelIndex { get; }
+		LevelConfig CurrentLevelConfig { get; }
+		bool IsLastLevel { get; }
 	}
 }

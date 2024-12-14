@@ -6,12 +6,10 @@ using Timer = Gameplay.Timer;
 
 namespace Structure
 {
-	public class EntryPoint : MonoBehaviour
+	public class EntryPoint : MonoBehaviour, ICoroutineRunner
 	{
 		[Header("Configs")]
 		[SerializeField] private Config _config;
-		[SerializeField] private LevelConfigsStorage _levelConfigsStorage;
-
 		[Space]
 		[SerializeField] private CameraMover _cameraMover;
 		[SerializeField] private Spawner _spawner;
@@ -28,8 +26,8 @@ namespace Structure
 
 			_cameraMover.Init(_config);
 			_spawner.Init(_config);
-			var gameplayManager = new GameplayManager(_levelConfigsStorage, _spawner, _timer, _solarBattery, _cameraMover);
-			_buildingsController.Init(gameplayManager, _solarBattery);
+			var gameplayManager = new GameplayManager(_config, _spawner, _timer, _solarBattery, _cameraMover, this);
+			_buildingsController.Init(gameplayManager);
 			InitScreen(gameplayManager);
 
 			gameplayManager.InitLevel();
@@ -38,7 +36,7 @@ namespace Structure
 		private void InitScreen(GameplayManager gameplayManager)
 		{
 			Screen screen = Instantiate(_screenPrefab).GetComponent<Screen>();
-			screen.Init(_timer, _solarBattery, gameplayManager);
+			screen.Init(_timer, _solarBattery, gameplayManager, _config);
 		}
 	}
 }

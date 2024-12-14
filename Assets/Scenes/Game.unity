@@ -990,8 +990,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd92bc7f9cd4f779dfdbe172d1e66da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grayColor: {r: 0.45882356, g: 0.4784314, b: 0.49803925, a: 1}
-  _greenColor: {r: 0.1991099, g: 0.8867924, b: 0.1991099, a: 1}
 --- !u!4 &555877226
 Transform:
   m_ObjectHideFlags: 0
@@ -2444,7 +2442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: a05dbf6937babf941b727000370ab4bd, type: 2}
-  _levelConfigsStorage: {fileID: 11400000, guid: c4e9cb5969dfae94a8cea3e23af18fb8, type: 2}
   _cameraMover: {fileID: 963194229}
   _spawner: {fileID: 2137240753}
   _solarBattery: {fileID: 303269339}
@@ -3159,6 +3156,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1114128812249465318, guid: 36ff38585f9e7084d9aba6b19ae518ae, type: 3}
   m_PrefabInstance: {fileID: 1511441359}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1515211911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1515211912}
+  m_Layer: 0
+  m_Name: CloudsContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1515211912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515211911}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2137240754}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1522667789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3493,37 +3521,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1114128812249465318, guid: 36ff38585f9e7084d9aba6b19ae518ae, type: 3}
   m_PrefabInstance: {fileID: 1603155481}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1609228278
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1609228279}
-  m_Layer: 0
-  m_Name: Objects container
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1609228279
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609228278}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1810996978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4294,6 +4291,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1114128812249465318, guid: 36ff38585f9e7084d9aba6b19ae518ae, type: 3}
   m_PrefabInstance: {fileID: 2029910298}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2056871230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2056871231}
+  m_Layer: 0
+  m_Name: SunbeamsContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2056871231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056871230}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2137240754}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2065691156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4525,7 +4553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67949607928c41f28a4082c01c30fe7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _container: {fileID: 1609228279}
+  _cloudsContainer: {fileID: 1515211912}
+  _sunbeamsContainer: {fileID: 2056871231}
 --- !u!4 &2137240754
 Transform:
   m_ObjectHideFlags: 0
@@ -4538,7 +4567,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1515211912}
+  - {fileID: 2056871231}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2140434897
@@ -4721,7 +4752,6 @@ SceneRoots:
   - {fileID: 129936246}
   - {fileID: 1246155098}
   - {fileID: 2137240754}
-  - {fileID: 1609228279}
   - {fileID: 1197528578}
   - {fileID: 2143879341}
   - {fileID: 555877226}

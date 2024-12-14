@@ -430,13 +430,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: home appliances
+      name: wash machine
       rect:
         serializedVersion: 2
-        x: 231
+        x: 240
         y: 0
-        width: 66
-        height: 65
+        width: 54
+        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -513,6 +513,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: micro oven
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 71
+        width: 70
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff175210ae50fb94d93b41354c2e937b
+      internalID: -1448866500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -540,12 +561,13 @@ TextureImporter:
       cloud_3: -1896704099
       devices: -1540241355
       gyro: 1910226764
-      home appliances: -1048435856
       lamp: -136533252
+      micro oven: -1448866500
       step border: -1922962396
       step fill: -1718886819
       sunbeam: 114375969
       tv: 275206263
+      wash machine: -1048435856
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

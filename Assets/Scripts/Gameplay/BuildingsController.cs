@@ -7,20 +7,14 @@ namespace Gameplay
 {
 	public class BuildingsController : MonoBehaviour
 	{
-		[SerializeField] private Color _grayColor;
-		[SerializeField] private Color _greenColor;
-
 		private List<MeshRenderer> _buildingMeshes;
 		private IGameLoop _gameLoop;
-		private ISolarBattery _solarBattery;
 
-		public void Init(IGameLoop gameLoop, ISolarBattery solarBattery)
+		public void Init(IGameLoop gameLoop)
 		{
 			_gameLoop = gameLoop;
-			_solarBattery = solarBattery;
 
-			_gameLoop.Started += SetupGrayColor;
-			_gameLoop.Finished += SetupGreenColor;
+			_gameLoop.LevelFinished += OnLevelFinished;
 		}
 
 		private void Awake()
@@ -32,27 +26,18 @@ namespace Gameplay
 		{
 			if (_gameLoop != null)
 			{
-				_gameLoop.Started -= SetupGrayColor;
-				_gameLoop.Finished -= SetupGreenColor;
+				_gameLoop.LevelFinished -= OnLevelFinished;
 			}
 		}
 
-		private void SetupGreenColor()
+		private void OnLevelFinished(bool isWon)
 		{
-			if (!_solarBattery.IsCharged)
+			if (!isWon)
 				return;
 
 			foreach (MeshRenderer buildingMesh in _buildingMeshes)
 			{
-				buildingMesh.material.color = _greenColor;
-			}
-		}
-
-		private void SetupGrayColor()
-		{
-			foreach (MeshRenderer buildingMesh in _buildingMeshes)
-			{
-				buildingMesh.material.color = _grayColor;
+				buildingMesh.material.color = _gameLoop.CurrentLevelConfig.BuildingsColor;
 			}
 		}
 	}

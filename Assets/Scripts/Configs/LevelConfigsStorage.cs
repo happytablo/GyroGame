@@ -8,11 +8,13 @@ namespace Configs
 	{
 		[SerializeField] private List<LevelConfig> _levelConfigs;
 
+		public IReadOnlyList<LevelConfig> LevelConfigs => _levelConfigs;
+
 		public LevelConfig GetLevelByIndex(int index)
 		{
-			if (_levelConfigs.Count > index)
+			if (LevelConfigs.Count > index)
 			{
-				return _levelConfigs[index];
+				return LevelConfigs[index];
 			}
 
 			return null;
@@ -20,7 +22,7 @@ namespace Configs
 
 		public bool HasNextLevel(int currentLevelIndex)
 		{
-			return _levelConfigs.Count - 1 > currentLevelIndex;
+			return LevelConfigs.Count - 1 > currentLevelIndex;
 		}
 	}
 }

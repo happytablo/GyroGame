@@ -7,6 +7,7 @@ namespace UI
 	public class EndGameView : MonoBehaviour
 	{
 		[SerializeField] private GyroButton[] _gyroButtons;
+		[SerializeField] private ChargeableDeviceView[] _chargeableDeviceViews;
 		[SerializeField] private LevelProgressView _levelProgressView;
 
 		private IGameplayManager _gameplayManager;
@@ -26,6 +27,15 @@ namespace UI
 		private void OnDisable()
 		{
 			Unsubscribe();
+		}
+
+		public void UpdateDevicesInfo()
+		{
+			foreach (var chargeableDeviceView in _chargeableDeviceViews)
+			{
+				var deviceInfo = _gameplayManager.CurrentLevelConfig.Devices.GetDeviceInfo(chargeableDeviceView.DeviceType);
+				chargeableDeviceView.UpdateView(deviceInfo.Amount);
+			}
 		}
 
 		private void OnButtonFilled(GyroButtonType buttonType)

@@ -8,23 +8,25 @@ namespace Configs
 	{
 		[SerializeField] private CloudMover[] _cloudPrefabs;
 		[SerializeField] private Sunbeam _sunbeamPrefab;
+		[Header("Levels")]
+		[SerializeField] private LevelConfigsStorage _levelConfigsStorage;
 		[Space]
 		[SerializeField] private Vector2Int _movementBordersAxisX = new Vector2Int(-110, 110);
 		[Header("Sunbeams")]
-		[SerializeField] private float _sunbeamSpawnPosY = 8;
-		[SerializeField] private float _chargeableSunbeamSpawnPosZ;
+		[SerializeField] private Vector3 _sunbeamSpawnPos = new Vector3(0, 8, 11);
 		[SerializeField] private Vector3 _sunbeamRotation = new Vector3(0, 0, -15);
-		[SerializeField] private float[] _notChargeableSunbeamSpawnPosZ;
 		[Header("Clouds")]
 		[SerializeField] private float _cloudOffsetX = 5f;
+		[Space]
+		[SerializeField] private float _pauseBetweenLevelsDuration = 2.5f;
 
 		public Sunbeam SunbeamPrefab => _sunbeamPrefab;
 		public Vector2Int MovementBordersAxisX => _movementBordersAxisX;
-		public float SunbeamSpawnPosY => _sunbeamSpawnPosY;
-		public float ChargeableSunbeamSpawnPosZ => _chargeableSunbeamSpawnPosZ;
+		public Vector3 SunbeamSpawnPos => _sunbeamSpawnPos;
 		public Vector3 SunbeamRotation => _sunbeamRotation;
-		public float[] NotChargeableSunbeamSpawnPosZ => _notChargeableSunbeamSpawnPosZ;
 		public float CloudOffsetX => _cloudOffsetX;
 		public CloudMover[] CloudPrefabs => _cloudPrefabs;
+		public float PauseBetweenLevelsDuration => _pauseBetweenLevelsDuration;
+		public LevelConfigsStorage LevelsConfigsStorage => _levelConfigsStorage;
 	}
 }

@@ -1,5 +1,4 @@
-﻿using Gameplay;
-using Structure;
+﻿using Structure;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,16 +7,17 @@ namespace UI
 	public class LevelProgressView : MonoBehaviour
 	{
 		[SerializeField] private Image[] _levelStepImages;
+		[SerializeField] private bool _isEndView;
 		[Space]
 		[SerializeField] private Color _lockedColor;
 		[SerializeField] private Color _passedColor;
 
-		private IGameplayManager _gameplayManager;
+		private IGameLoop _gameLoop;
 		private bool _isSubscribed;
 
-		public void Init(IGameplayManager gameplayManager)
+		public void Init(IGameLoop gameLoop)
 		{
-			_gameplayManager = gameplayManager;
+			_gameLoop = gameLoop;
 
 			UpdateView();
 			Subscribe();
@@ -25,7 +25,7 @@ namespace UI
 
 		private void OnEnable()
 		{
-			if (_gameplayManager != null)
+			if (_gameLoop != null)
 			{
 				UpdateView();
 				Subscribe();
@@ -36,7 +36,7 @@ namespace UI
 		{
 			if (!_isSubscribed)
 			{
-				_gameplayManager.Started += UpdateView;
+				_gameLoop.Started += UpdateView;
 				_isSubscribed = true;
 			}
 		}
@@ -45,18 +45,24 @@ namespace UI
 		{
 			if (_isSubscribed)
 			{
-				_gameplayManager.Started -= UpdateView;
+				_gameLoop.Started -= UpdateView;
 				_isSubscribed = false;
 			}
 		}
 
 		private void UpdateView()
 		{
-			var levelIndex = _gameplayManager.CurrentLevelIndex;
+			var currentLevelIndex = _gameLoop.CurrentLevelIndex;
+			var isLastLevel = _gameLoop.IsLastLevel;
 
 			for (int i = 0; i < _levelStepImages.Length; i++)
 			{
-				var color = i >= levelIndex ? _lockedColor : _passedColor;
+				bool isPassed = i < currentLevelIndex;
+				var color = isPassed ? _passedColor : _lockedColor;
+
+				if (!isPassed && isLastLevel && _isEndView)
+					color = _passedColor;
+
 				_levelStepImages[i].color = color;
 			}
 		}

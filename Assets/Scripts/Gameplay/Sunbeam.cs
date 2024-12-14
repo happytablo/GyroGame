@@ -7,14 +7,20 @@ namespace Gameplay
 	{
 		[SerializeField] private SpriteRenderer _spriteRenderer;
 		[SerializeField] private LayerMask _cloudLayer;
+		[SerializeField] private float _endAlpha = 0.8f;
 
 		private readonly Collider[] _colliders = new Collider[1];
+		private bool _isEnabled;
+
+		private Coroutine _fadeCoroutine;
 
 		public bool IsCovered { get; private set; }
-		private Coroutine _fadeCoroutine;
 
 		private void Update()
 		{
+			if (!_isEnabled)
+				return;
+
 			bool newIsCovered = IsCoveredByClouds();
 
 			if (newIsCovered != IsCovered)
@@ -28,6 +34,17 @@ namespace Gameplay
 			}
 		}
 
+		public void Enable()
+		{
+			_isEnabled = true;
+		}
+
+		public void Disable()
+		{
+			_isEnabled = false;
+			_spriteRenderer.enabled = false;
+		}
+
 		private bool IsCoveredByClouds()
 		{
 			int count = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale, _colliders, transform.rotation, _cloudLayer);
@@ -37,7 +54,7 @@ namespace Gameplay
 		private IEnumerator FadeSprite(bool show, float duration)
 		{
 			float startAlpha = _spriteRenderer.color.a;
-			float endAlpha = show ? 1f : 0f;
+			float endAlpha = show ? _endAlpha : 0f;
 			float elapsedTime = 0f;
 
 			Color color = _spriteRenderer.color;

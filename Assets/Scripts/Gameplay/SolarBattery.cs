@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-	public class SolarBattery : MonoBehaviour, ISolarBattery
+	public class SolarBattery : MonoBehaviour
 	{
 		public event Action ValueChanged;
 		public event Action Fulled;
@@ -16,7 +16,6 @@ namespace Gameplay
 		private readonly List<Sunbeam> _collidedSunbeams = new List<Sunbeam>();
 
 		public float ChargeValue { get; private set; }
-		public bool IsCharged => ChargeValue >= 1;
 
 		private void Update()
 		{
@@ -31,6 +30,9 @@ namespace Gameplay
 
 		private void OnTriggerEnter(Collider other)
 		{
+			if (!_isChargeable)
+				return;
+
 			if (other.TryGetComponent(out Sunbeam sunbeam))
 			{
 				if (_collidedSunbeams.Contains(sunbeam))
@@ -44,6 +46,9 @@ namespace Gameplay
 
 		private void OnTriggerExit(Collider other)
 		{
+			if (!_isChargeable)
+				return;
+
 			if (other.TryGetComponent(out Sunbeam sunbeam))
 			{
 				if (_collidedSunbeams.Contains(sunbeam))
@@ -58,13 +63,12 @@ namespace Gameplay
 			_stepPerFrame = stepPerFrame;
 			Reset();
 			_isChargeable = true;
-			Debug.Log($"START ch");
 		}
 
-		private void StopCharging()
+		public void StopCharging()
 		{
-			_isChargeable = false;
-			Debug.Log($"Stop ch");
+			if (_isChargeable)
+				_isChargeable = false;
 		}
 
 		private void Charge()
@@ -86,6 +90,7 @@ namespace Gameplay
 		{
 			_collidedSunbeams.Clear();
 			ChargeValue = 0;
+			ValueChanged?.Invoke();
 		}
 	}
 }

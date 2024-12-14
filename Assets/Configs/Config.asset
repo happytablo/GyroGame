@@ -12,18 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3ac7197b324024865f57dca34a8c27, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  _cloudPrefab: {fileID: 5294881740753406819, guid: 0832ce7b4011cad4c97ce0633346b5a2, type: 3}
   _cloudPrefabs:
   - {fileID: 5294881740753406819, guid: 4ec645729f84c374daf170bb758d4d0e, type: 3}
   - {fileID: 5294881740753406819, guid: e2e702e84d5e9b34cb6403e40680eb5e, type: 3}
   - {fileID: 5294881740753406819, guid: 0832ce7b4011cad4c97ce0633346b5a2, type: 3}
   _sunbeamPrefab: {fileID: 6506704556241345907, guid: afc299bf817ad924ea533e53978880dc, type: 3}
+  _levelConfigsStorage: {fileID: 11400000, guid: c4e9cb5969dfae94a8cea3e23af18fb8, type: 2}
   _movementBordersAxisX: {x: -110, y: 110}
-  _sunbeamSpawnPosY: 8
-  _chargeableSunbeamSpawnPosZ: 11
+  _sunbeamSpawnPos: {x: 0, y: 8, z: 11}
   _sunbeamRotation: {x: 0, y: 0, z: -15}
-  _notChargeableSunbeamSpawnPosZ:
-  - 6
-  - 16
-  _cloudSpawnPos: {x: 0, y: 9, z: 10}
   _cloudOffsetX: 5
+  _pauseBetweenLevelsDuration: 2
