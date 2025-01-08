@@ -18,8 +18,11 @@ MonoBehaviour:
   - {fileID: 5294881740753406819, guid: 0832ce7b4011cad4c97ce0633346b5a2, type: 3}
   _sunbeamPrefab: {fileID: 6506704556241345907, guid: afc299bf817ad924ea533e53978880dc, type: 3}
   _levelConfigsStorage: {fileID: 11400000, guid: c4e9cb5969dfae94a8cea3e23af18fb8, type: 2}
+  _timingConfig:
+    <PauseBetweenLevels>k__BackingField: 2
+    <PreviewDelay>k__BackingField: 5
+    <FinishViewDelay>k__BackingField: 5
   _movementBordersAxisX: {x: -110, y: 110}
   _sunbeamSpawnPos: {x: 0, y: 8, z: 11}
   _sunbeamRotation: {x: 0, y: 0, z: -15}
   _cloudOffsetX: 5
-  _pauseBetweenLevelsDuration: 2

@@ -12,8 +12,16 @@ namespace Gameplay
 		{
 			if (HasGyroscope)
 			{
-				Gyroscope = Input.gyro;
+				Gyroscope ??= Input.gyro;
 				Gyroscope.enabled = true;
+			}
+		}
+
+		public static void DisableGyro()
+		{
+			if (HasGyroscope)
+			{
+				Gyroscope.enabled = false;
 			}
 		}
 	}

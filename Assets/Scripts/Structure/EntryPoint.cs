@@ -1,5 +1,6 @@
 ﻿using Configs;
 using Gameplay;
+using Structure.GameStates;
 using UnityEngine;
 using Screen = UI.Screen;
 using Timer = Gameplay.Timer;
@@ -22,21 +23,22 @@ namespace Structure
 
 		private void Awake()
 		{
-			DeviceGyro.EnableGyro();
-
 			_cameraMover.Init(_config);
 			_spawner.Init(_config);
-			var gameplayManager = new GameplayManager(_config, _spawner, _timer, _solarBattery, _cameraMover, this);
-			_buildingsController.Init(gameplayManager);
-			InitScreen(gameplayManager);
+			var gameplayManager = new GameplayManager(_config, _spawner, _timer, _solarBattery, _buildingsController);
 
-			gameplayManager.InitLevel();
+			var screen = InitScreen(gameplayManager);
+
+			var gameStateMachine = new GameStateMachine(_config, screen, gameplayManager, this);
+			
+			gameStateMachine.ChangeState<PreviewState>();
 		}
 
-		private void InitScreen(GameplayManager gameplayManager)
+		private Screen InitScreen(GameplayManager gameplayManager)
 		{
 			Screen screen = Instantiate(_screenPrefab).GetComponent<Screen>();
 			screen.Init(_timer, _solarBattery, gameplayManager, _config);
+			return screen;
 		}
 	}
 }

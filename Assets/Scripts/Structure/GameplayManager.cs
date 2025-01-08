@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections;
 using Configs;
 using Gameplay;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Structure
 {
-	public class GameplayManager : IGameplayManager
+	public class GameplayManager : ILevelInfo
 	{
 		public event Action Started;
 		public event Action<bool> LevelFinished;
-		public event Action Finished;
 
 		private readonly Config _config;
 		private readonly Spawner _spawner;
 		private readonly Timer _timer;
 		private readonly SolarBattery _solarBattery;
-		private readonly CameraMover _cameraMover;
-		private readonly ICoroutineRunner _coroutineRunner;
+		private readonly BuildingsController _buildingsController;
 
 		private int _currentLevelIndex;
 		private LevelConfig _currentLevelConfig;
@@ -29,14 +25,13 @@ namespace Structure
 		public bool IsLastLevel => _currentLevelIndex >= _config.LevelsConfigsStorage.LevelConfigs.Count - 1;
 
 		public GameplayManager(Config config, Spawner spawner, Timer timer, SolarBattery solarBattery,
-							   CameraMover cameraMover, ICoroutineRunner coroutineRunner)
+							   BuildingsController buildingsController)
 		{
 			_config = config;
 			_spawner = spawner;
 			_timer = timer;
 			_solarBattery = solarBattery;
-			_cameraMover = cameraMover;
-			_coroutineRunner = coroutineRunner;
+			_buildingsController = buildingsController;
 		}
 
 		public void InitLevel()
@@ -44,14 +39,18 @@ namespace Structure
 			Subscribe();
 			StartLevel(_currentLevelIndex);
 		}
-
-		public void RestartGame() => SceneManager.LoadScene(0);
-
+		
 		public void LoadNextLevel()
 		{
-			CleanupCurrentLevel();
+			_spawner.CleanupClouds();
 			_currentLevelIndex++;
 			StartLevel(_currentLevelIndex);
+		}
+
+		public void FinishGame()
+		{
+			Unsubscribe();
+			_spawner.CleanupClouds();
 		}
 
 		private void StartLevel(int levelIndex)
@@ -66,7 +65,6 @@ namespace Structure
 			_spawner.InitLevel(_currentLevelConfig);
 			_timer.StartTimer(_currentLevelConfig.Time);
 			_solarBattery.BeginCharging(_currentLevelConfig.ChargingStepPerFrame);
-			_cameraMover.enabled = true;
 
 			Started?.Invoke();
 		}
@@ -83,17 +81,12 @@ namespace Structure
 
 		private void TriggerLevelEnd(bool isWon)
 		{
-			if (_levelEndedCoroutine != null)
-				_coroutineRunner.StopCoroutine(_levelEndedCoroutine);
+			EndLevel();
 
-			_levelEndedCoroutine = _coroutineRunner.StartCoroutine(OnLevelEndedCoroutine(isWon));
-		}
+			if (isWon)
+				_buildingsController.UpdateBuildingsColor(_currentLevelConfig.BuildingsColor);
 
-		private void FinishGame()
-		{
-			Unsubscribe();
-			_spawner.CleanupClouds();
-			Finished?.Invoke();
+			LevelFinished?.Invoke(isWon);
 		}
 
 		private void EndLevel()
@@ -101,24 +94,7 @@ namespace Structure
 			_timer.Pause(true);
 			_spawner.DisableSunbeams();
 			_solarBattery.StopCharging();
-			_cameraMover.enabled = false;
 		}
-
-		private IEnumerator OnLevelEndedCoroutine(bool isWon)
-		{
-			EndLevel();
-			LevelFinished?.Invoke(isWon);
-
-			yield return new WaitForSeconds(_config.PauseBetweenLevelsDuration);
-
-			if (isWon && _config.LevelsConfigsStorage.HasNextLevel(_currentLevelIndex))
-				LoadNextLevel();
-			else
-				FinishGame();
-		}
-
-		private void CleanupCurrentLevel() =>
-			_spawner.CleanupClouds();
 
 		private void Subscribe()
 		{

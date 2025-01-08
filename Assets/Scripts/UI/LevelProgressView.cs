@@ -12,48 +12,20 @@ namespace UI
 		[SerializeField] private Color _lockedColor;
 		[SerializeField] private Color _passedColor;
 
-		private IGameLoop _gameLoop;
+		private ILevelInfo _levelInfo;
 		private bool _isSubscribed;
 
-		public void Init(IGameLoop gameLoop)
+		public void Init(ILevelInfo levelInfo)
 		{
-			_gameLoop = gameLoop;
+			_levelInfo = levelInfo;
 
 			UpdateView();
-			Subscribe();
 		}
 
-		private void OnEnable()
+		public void UpdateView()
 		{
-			if (_gameLoop != null)
-			{
-				UpdateView();
-				Subscribe();
-			}
-		}
-
-		private void Subscribe()
-		{
-			if (!_isSubscribed)
-			{
-				_gameLoop.Started += UpdateView;
-				_isSubscribed = true;
-			}
-		}
-
-		private void OnDisable()
-		{
-			if (_isSubscribed)
-			{
-				_gameLoop.Started -= UpdateView;
-				_isSubscribed = false;
-			}
-		}
-
-		private void UpdateView()
-		{
-			var currentLevelIndex = _gameLoop.CurrentLevelIndex;
-			var isLastLevel = _gameLoop.IsLastLevel;
+			var currentLevelIndex = _levelInfo.CurrentLevelIndex;
+			var isLastLevel = _levelInfo.IsLastLevel;
 
 			for (int i = 0; i < _levelStepImages.Length; i++)
 			{

@@ -1,4 +1,5 @@
-﻿using Gameplay;
+﻿using System;
+using Gameplay;
 using UnityEngine;
 
 namespace Configs
@@ -10,6 +11,7 @@ namespace Configs
 		[SerializeField] private Sunbeam _sunbeamPrefab;
 		[Header("Levels")]
 		[SerializeField] private LevelConfigsStorage _levelConfigsStorage;
+		[SerializeField] private TimingConfig _timingConfig;
 		[Space]
 		[SerializeField] private Vector2Int _movementBordersAxisX = new Vector2Int(-110, 110);
 		[Header("Sunbeams")]
@@ -17,8 +19,6 @@ namespace Configs
 		[SerializeField] private Vector3 _sunbeamRotation = new Vector3(0, 0, -15);
 		[Header("Clouds")]
 		[SerializeField] private float _cloudOffsetX = 5f;
-		[Space]
-		[SerializeField] private float _pauseBetweenLevelsDuration = 2.5f;
 
 		public Sunbeam SunbeamPrefab => _sunbeamPrefab;
 		public Vector2Int MovementBordersAxisX => _movementBordersAxisX;
@@ -26,7 +26,15 @@ namespace Configs
 		public Vector3 SunbeamRotation => _sunbeamRotation;
 		public float CloudOffsetX => _cloudOffsetX;
 		public CloudMover[] CloudPrefabs => _cloudPrefabs;
-		public float PauseBetweenLevelsDuration => _pauseBetweenLevelsDuration;
 		public LevelConfigsStorage LevelsConfigsStorage => _levelConfigsStorage;
+		public TimingConfig TimingConfig => _timingConfig;
+	}
+
+	[Serializable]
+	public class TimingConfig
+	{
+		[field: SerializeField] public float PauseBetweenLevels { get; private set; }
+		[field: SerializeField] public float PreviewDelay { get; private set; }
+		[field: SerializeField] public float FinishViewDelay { get; private set; }
 	}
 }

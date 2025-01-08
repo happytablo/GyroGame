@@ -1,7 +1,10 @@
-﻿using Configs;
+﻿using System;
+using System.Collections;
+using Configs;
 using Gameplay;
 using Structure;
 using UnityEngine;
+using Timer = Gameplay.Timer;
 
 namespace UI
 {
@@ -14,75 +17,67 @@ namespace UI
 		[SerializeField] private BatteryView _batteryView;
 		[SerializeField] private LevelProgressView _levelProgressView;
 		[SerializeField] private LevelFinishView _levelFinishView;
+		[SerializeField] private PreviewScreen _previewScreen;
 
-		private IGameplayManager _gameplayManager;
+		private ILevelInfo _levelInfo;
 		private Config _config;
 
 		private bool _isSubscribed;
 
-		public void Init(Timer timer, SolarBattery solarBattery, IGameplayManager gameplayManager, Config config)
+		public void Init(Timer timer, SolarBattery solarBattery, ILevelInfo levelInfo, Config config)
 		{
-			_gameplayManager = gameplayManager;
+			_levelInfo = levelInfo;
 			_config = config;
 
 			_timerView.Init(timer);
 			_batteryView.Init(solarBattery);
-			_endGameView.Init(gameplayManager);
-			_levelProgressView.Init(gameplayManager);
-
-			Subscribe();
+			_endGameView.Init(levelInfo);
+			_levelProgressView.Init(levelInfo);
 		}
 
-		private void OnEnable()
+		public void ShowPreviewScreen(Action onPreviewEnded)
 		{
-			if (_gameplayManager != null)
-				Subscribe();
+			StartCoroutine(ShowPreviewScreenCoroutine(onPreviewEnded));
 		}
 
-		private void OnDisable()
+		public void ShowFinishView(Action onFinishViewEnded)
 		{
-			Unsubscribe();
+			_ingameView.gameObject.SetActive(false);
+			_endGameView.gameObject.SetActive(true);
+			_endGameView.UpdateDevicesInfo();
+
+			StartCoroutine(FinishDelayCoroutine(onFinishViewEnded));
 		}
 
-		private void OnStarted()
+		public void OnLevelFinished(bool isWon)
+		{
+			int currentLevel = _levelInfo.CurrentLevelIndex + 1;
+			_levelFinishView.Show(currentLevel, _config.TimingConfig.PauseBetweenLevels, isWon);
+			_levelProgressView.UpdateView();
+		}
+
+		public void OnStarted()
 		{
 			_ingameView.gameObject.SetActive(true);
 			_endGameView.gameObject.SetActive(false);
 		}
 
-		private void OnFinished()
+		private IEnumerator ShowPreviewScreenCoroutine(Action onPreviewEnded)
 		{
-			_ingameView.gameObject.SetActive(false);
-			_endGameView.gameObject.SetActive(true);
-			_endGameView.UpdateDevicesInfo();
+			_previewScreen.Enable();
+			yield return new WaitForSeconds(_config.TimingConfig.PreviewDelay);
+			yield return _previewScreen.StartCountdownCoroutine();
+
+			_previewScreen.Disable();
+
+			onPreviewEnded?.Invoke();
 		}
 
-		private void OnLevelFinished(bool isWon)
+		private IEnumerator FinishDelayCoroutine(Action onFinishViewEnded)
 		{
-			int currentLevel = _gameplayManager.CurrentLevelIndex + 1;
-			_levelFinishView.Show(currentLevel, _config.PauseBetweenLevelsDuration, isWon);
-		}
+			yield return new WaitForSeconds(_config.TimingConfig.FinishViewDelay);
 
-		private void Subscribe()
-		{
-			if (!_isSubscribed)
-			{
-				_gameplayManager.Finished += OnFinished;
-				_gameplayManager.Started += OnStarted;
-				_gameplayManager.LevelFinished += OnLevelFinished;
-				_isSubscribed = true;
-			}
-		}
-
-		private void Unsubscribe()
-		{
-			if (_isSubscribed && _gameplayManager != null)
-			{
-				_gameplayManager.Finished -= OnFinished;
-				_gameplayManager.Started -= OnStarted;
-				_gameplayManager.LevelFinished -= OnLevelFinished;
-				_isSubscribed = false;
-			}
+			onFinishViewEnded?.Invoke();
 		}
 	}
 }
