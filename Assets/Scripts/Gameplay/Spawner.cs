@@ -14,21 +14,28 @@ namespace Gameplay
 		private Config _config;
 		private CloudMover _lastSpawnedCloud;
 		private readonly List<Sunbeam> _sunbeams = new List<Sunbeam>();
-		
+
+		private bool _sunbeamsEnabled;
+		private bool _sunbeamsSpawned;
+
 		public void Init(Config config)
 		{
 			_config = config;
-
-			SpawnSunbeams();
 		}
 
 		public void InitLevel(LevelConfig levelConfig)
 		{
 			SpawnClouds(levelConfig);
+			SpawnSunbeams();
 
-			foreach (var sunbeam in _sunbeams)
+			if (!_sunbeamsEnabled)
 			{
-				sunbeam.Enable();
+				foreach (var sunbeam in _sunbeams)
+				{
+					sunbeam.Enable();
+				}
+
+				_sunbeamsEnabled = true;
 			}
 		}
 
@@ -38,6 +45,8 @@ namespace Gameplay
 			{
 				sunbeam.Disable();
 			}
+
+			_sunbeamsEnabled = false;
 		}
 
 		public void CleanupClouds()
@@ -48,8 +57,27 @@ namespace Gameplay
 			}
 		}
 
+		public void Cleanup()
+		{
+			CleanupClouds();
+			CleanupSunbeams();
+		}
+
+		private void CleanupSunbeams()
+		{
+			foreach (Transform child in _sunbeamsContainer)
+			{
+				Destroy(child.gameObject);
+			}
+
+			_sunbeams.Clear();
+		}
+
 		private void SpawnSunbeams()
 		{
+			if (_sunbeamsSpawned)
+				return;
+
 			float accumulatedDistance = _config.MovementBordersAxisX.x;
 			float sunbeamWidth = _config.SunbeamPrefab.transform.localScale.x;
 
@@ -61,6 +89,8 @@ namespace Gameplay
 				_sunbeams.Add(sunbeam);
 				accumulatedDistance += sunbeamWidth;
 			}
+
+			_sunbeamsSpawned = true;
 		}
 
 		private void SpawnClouds(LevelConfig levelConfig)

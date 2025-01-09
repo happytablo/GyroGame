@@ -6,19 +6,17 @@ namespace Structure.GameStates
 	public class PreviewState : IGameState
 	{
 		private readonly IStateSwitcher _stateSwitcher;
-		private readonly Screen _screen;
+		private readonly ScreenManager _screenManager;
 
-		public PreviewState(IStateSwitcher stateSwitcher, Screen screen)
+		public PreviewState(IStateSwitcher stateSwitcher, ScreenManager screenManager)
 		{
 			_stateSwitcher = stateSwitcher;
-			_screen = screen;
+			_screenManager = screenManager;
 		}
 
 		public void Enter()
 		{
-			DeviceGyro.DisableGyro();
-
-			_screen.ShowPreviewScreen(OnPreviewEnded);
+			_screenManager.ShowPreviewScreen(OnPreviewEnded);
 		}
 
 		public void Exit()

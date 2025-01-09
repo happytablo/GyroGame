@@ -7,14 +7,15 @@ namespace Structure
 {
 	public class GameplayManager : ILevelInfo
 	{
-		public event Action Started;
 		public event Action<bool> LevelFinished;
+		public event Action ExitTriggered;
 
 		private readonly Config _config;
 		private readonly Spawner _spawner;
 		private readonly Timer _timer;
 		private readonly SolarBattery _solarBattery;
 		private readonly BuildingsController _buildingsController;
+		private readonly RaycastToExitChecker _toExitChecker;
 
 		private int _currentLevelIndex;
 		private LevelConfig _currentLevelConfig;
@@ -25,13 +26,14 @@ namespace Structure
 		public bool IsLastLevel => _currentLevelIndex >= _config.LevelsConfigsStorage.LevelConfigs.Count - 1;
 
 		public GameplayManager(Config config, Spawner spawner, Timer timer, SolarBattery solarBattery,
-							   BuildingsController buildingsController)
+							   BuildingsController buildingsController, RaycastToExitChecker toExitChecker)
 		{
 			_config = config;
 			_spawner = spawner;
 			_timer = timer;
 			_solarBattery = solarBattery;
 			_buildingsController = buildingsController;
+			_toExitChecker = toExitChecker;
 		}
 
 		public void InitLevel()
@@ -39,7 +41,7 @@ namespace Structure
 			Subscribe();
 			StartLevel(_currentLevelIndex);
 		}
-		
+
 		public void LoadNextLevel()
 		{
 			_spawner.CleanupClouds();
@@ -47,10 +49,11 @@ namespace Structure
 			StartLevel(_currentLevelIndex);
 		}
 
-		public void FinishGame()
+		public void Cleanup()
 		{
 			Unsubscribe();
-			_spawner.CleanupClouds();
+			_spawner.Cleanup();
+			_solarBattery.Cleanup();
 		}
 
 		private void StartLevel(int levelIndex)
@@ -62,11 +65,9 @@ namespace Structure
 				return;
 			}
 
-			_spawner.InitLevel(_currentLevelConfig);
-			_timer.StartTimer(_currentLevelConfig.Time);
 			_solarBattery.BeginCharging(_currentLevelConfig.ChargingStepPerFrame);
-
-			Started?.Invoke();
+			_timer.StartTimer(_currentLevelConfig.Time);
+			_spawner.InitLevel(_currentLevelConfig);
 		}
 
 		private void OnBatteryFulled()
@@ -96,16 +97,24 @@ namespace Structure
 			_solarBattery.StopCharging();
 		}
 
+		private void OnExitTriggered()
+		{
+			EndLevel();
+			ExitTriggered?.Invoke();
+		}
+
 		private void Subscribe()
 		{
 			_timer.Finished += OnTimerFinished;
 			_solarBattery.Fulled += OnBatteryFulled;
+			_toExitChecker.TriggerToMenu += OnExitTriggered;
 		}
 
 		private void Unsubscribe()
 		{
 			_timer.Finished -= OnTimerFinished;
 			_solarBattery.Fulled -= OnBatteryFulled;
+			_toExitChecker.TriggerToMenu -= OnExitTriggered;
 		}
 	}
 }

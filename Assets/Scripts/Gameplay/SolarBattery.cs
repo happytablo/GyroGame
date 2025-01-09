@@ -71,6 +71,11 @@ namespace Gameplay
 				_isChargeable = false;
 		}
 
+		public void Cleanup()
+		{
+			_collidedSunbeams.Clear();
+		}
+
 		private void Charge()
 		{
 			if (!_isChargeable)
@@ -88,7 +93,6 @@ namespace Gameplay
 
 		private void Reset()
 		{
-			_collidedSunbeams.Clear();
 			ChargeValue = 0;
 			ValueChanged?.Invoke();
 		}

@@ -5,6 +5,7 @@ namespace Gameplay
 	public static class DeviceGyro
 	{
 		public static bool HasGyroscope => SystemInfo.supportsGyroscope;
+		public static bool Enabled { get; private set; }
 
 		public static Gyroscope Gyroscope;
 
@@ -14,6 +15,7 @@ namespace Gameplay
 			{
 				Gyroscope ??= Input.gyro;
 				Gyroscope.enabled = true;
+				Enabled = true;
 			}
 		}
 
@@ -21,7 +23,11 @@ namespace Gameplay
 		{
 			if (HasGyroscope)
 			{
+				if (Gyroscope == null)
+					return;
+
 				Gyroscope.enabled = false;
+				Enabled = false;
 			}
 		}
 	}

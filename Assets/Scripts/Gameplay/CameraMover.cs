@@ -5,7 +5,7 @@ namespace Gameplay
 {
 	public class CameraMover : MonoBehaviour
 	{
-		[SerializeField] private float _speedCoef = 10;
+		[SerializeField] private float _speedCoef = 50;
 
 		private Config _config;
 
@@ -18,7 +18,7 @@ namespace Gameplay
 
 		private void Update()
 		{
-			if (!DeviceGyro.HasGyroscope)
+			if (!DeviceGyro.HasGyroscope || !DeviceGyro.Enabled)
 				return;
 
 			float currentGyroX = DeviceGyro.Gyroscope.gravity.x;

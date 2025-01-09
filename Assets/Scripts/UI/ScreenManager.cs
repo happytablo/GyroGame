@@ -8,7 +8,7 @@ using Timer = Gameplay.Timer;
 
 namespace UI
 {
-	public class Screen : MonoBehaviour
+	public class ScreenManager : MonoBehaviour
 	{
 		[SerializeField] private GameObject _ingameView;
 		[SerializeField] private EndGameView _endGameView;
@@ -44,7 +44,7 @@ namespace UI
 		{
 			_ingameView.gameObject.SetActive(false);
 			_endGameView.gameObject.SetActive(true);
-			_endGameView.UpdateDevicesInfo();
+			_endGameView.UpdateView();
 
 			StartCoroutine(FinishDelayCoroutine(onFinishViewEnded));
 		}
@@ -53,7 +53,7 @@ namespace UI
 		{
 			int currentLevel = _levelInfo.CurrentLevelIndex + 1;
 			_levelFinishView.Show(currentLevel, _config.TimingConfig.PauseBetweenLevels, isWon);
-			_levelProgressView.UpdateView();
+			_levelProgressView.UpdateView(isWon);
 		}
 
 		public void OnStarted()

@@ -22,6 +22,7 @@ MonoBehaviour:
     <PauseBetweenLevels>k__BackingField: 2
     <PreviewDelay>k__BackingField: 5
     <FinishViewDelay>k__BackingField: 5
+    <ExitToMenuDelay>k__BackingField: 3
   _movementBordersAxisX: {x: -110, y: 110}
   _sunbeamSpawnPos: {x: 0, y: 8, z: 11}
   _sunbeamRotation: {x: 0, y: 0, z: -15}

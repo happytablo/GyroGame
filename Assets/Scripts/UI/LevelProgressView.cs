@@ -22,14 +22,14 @@ namespace UI
 			UpdateView();
 		}
 
-		public void UpdateView()
+		public void UpdateView(bool isWon = false)
 		{
-			var currentLevelIndex = _levelInfo.CurrentLevelIndex;
+			var currentLevel = isWon ? _levelInfo.CurrentLevelIndex + 1 : _levelInfo.CurrentLevelIndex;
 			var isLastLevel = _levelInfo.IsLastLevel;
 
 			for (int i = 0; i < _levelStepImages.Length; i++)
 			{
-				bool isPassed = i < currentLevelIndex;
+				bool isPassed = i < currentLevel;
 				var color = isPassed ? _passedColor : _lockedColor;
 
 				if (!isPassed && isLastLevel && _isEndView)

@@ -17,8 +17,10 @@ namespace UI
 			_levelProgressView.Init(levelInfo);
 		}
 
-		public void UpdateDevicesInfo()
+		public void UpdateView()
 		{
+			_levelProgressView.UpdateView();
+
 			foreach (var chargeableDeviceView in _chargeableDeviceViews)
 			{
 				var deviceInfo = _levelInfo.CurrentLevelConfig.Devices.GetDeviceInfo(chargeableDeviceView.DeviceType);

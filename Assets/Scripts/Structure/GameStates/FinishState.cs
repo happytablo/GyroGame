@@ -5,17 +5,17 @@ namespace Structure.GameStates
 	public class FinishState : IGameState
 	{
 		private readonly IStateSwitcher _stateSwitcher;
-		private readonly Screen _screen;
+		private readonly ScreenManager _screenManager;
 
-		public FinishState(IStateSwitcher stateSwitcher, Screen screen)
+		public FinishState(IStateSwitcher stateSwitcher, ScreenManager screenManager)
 		{
 			_stateSwitcher = stateSwitcher;
-			_screen = screen;
+			_screenManager = screenManager;
 		}
 
 		public void Enter()
 		{
-			_screen.ShowFinishView(OnFinishViewEnded);
+			_screenManager.ShowFinishView(OnFinishViewEnded);
 		}
 
 		public void Exit()

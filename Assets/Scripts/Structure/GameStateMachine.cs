@@ -11,13 +11,13 @@ namespace Structure
 		private readonly Dictionary<Type, IGameState> _states;
 		private IGameState _currentState;
 
-		public GameStateMachine(Config config, Screen screen, GameplayManager gameplayManager, ICoroutineRunner coroutineRunner)
+		public GameStateMachine(Config config, ScreenManager screenManager, GameplayManager gameplayManager, ICoroutineRunner coroutineRunner)
 		{
 			_states = new Dictionary<Type, IGameState>
 			{
-				[typeof(PreviewState)] = new PreviewState(this, screen),
-				[typeof(GameLoopState)] = new GameLoopState(this, screen, config, gameplayManager, coroutineRunner),
-				[typeof(FinishState)] = new FinishState(this, screen),
+				[typeof(PreviewState)] = new PreviewState(this, screenManager),
+				[typeof(GameLoopState)] = new GameLoopState(this, screenManager, config, gameplayManager, coroutineRunner),
+				[typeof(FinishState)] = new FinishState(this, screenManager),
 				[typeof(MenuState)] = new MenuState(this)
 			};
 		}

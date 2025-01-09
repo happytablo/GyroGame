@@ -1,5 +1,4 @@
-﻿using System;
-using Gameplay;
+﻿using Gameplay;
 using UnityEngine;
 
 namespace Configs
@@ -28,13 +27,5 @@ namespace Configs
 		public CloudMover[] CloudPrefabs => _cloudPrefabs;
 		public LevelConfigsStorage LevelsConfigsStorage => _levelConfigsStorage;
 		public TimingConfig TimingConfig => _timingConfig;
-	}
-
-	[Serializable]
-	public class TimingConfig
-	{
-		[field: SerializeField] public float PauseBetweenLevels { get; private set; }
-		[field: SerializeField] public float PreviewDelay { get; private set; }
-		[field: SerializeField] public float FinishViewDelay { get; private set; }
 	}
 }
